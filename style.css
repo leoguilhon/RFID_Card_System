@@ -1,0 +1,48 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+body {
+  background-image: url("image.jpg");
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+#menu {
+  box-shadow: 1px 1px 1px black;
+  min-width: 200px;
+  background-color: lightgrey;
+  display: flex;
+  flex-direction: column;
+  width: 13vw;
+  gap: 10px;
+  padding: 60px;
+  border-radius: 30px;
+  border: 5px solid black;
+  box-sizing: border-box;
+}
+#formAcesso {
+  font-family: 'Chocolate Donuts', cursive;
+  font-size: 18px;
+  box-sizing: border-box;
+  font-weight: bold;
+  gap: 10px;
+  padding-top: 15px;
+}
+#mensagem {
+  font-family: 'Chocolate Donuts', cursive;
+  font-size: 40px;
+  flex-direction: column;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  align-items: center;
+  gap: 20px;
+  padding: 60px;
+  box-sizing: border-box;
+}
+@font-face {
+    font-family: 'Chocolate Donuts';
+    src: url('caminho/para/Chocolate Donuts.otf') format('opentype');
+}
