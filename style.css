@@ -27,6 +27,7 @@ body {
 #formAcesso {
   font-family: 'Chocolate Donuts', cursive;
   font-size: 18px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   box-sizing: border-box;
   font-weight: bold;
   gap: 10px;
