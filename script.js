@@ -223,6 +223,7 @@ function realizarAcessoForm(idToAccess) {
           }
           console.log('Status de acesso atualizado com sucesso');
           exibirMensagem(idToAccess);
+          document.getElementById('idCard').value = ''; // Limpa o campo do formulário
         })
         .catch(error => {
           console.error('Erro ao atualizar status de acesso:', error);
@@ -288,6 +289,7 @@ function habilitarFormulario() {
   const formElements = document.getElementById('formAcesso').elements;
   for (let i = 0; i < formElements.length; i++) {
     formElements[i].disabled = false;
+    document.getElementById('idCard').focus();
   }
 }
 
@@ -338,5 +340,7 @@ function exibirMensagem(id) {
     });
   }, 2000); // 2 segundos em milissegundos
 }
+
+document.getElementById('idCard').focus();
 
 
