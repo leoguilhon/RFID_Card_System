@@ -7,13 +7,16 @@ const cors = require('cors');
 const app = express();
 app.use(cors()); // Isso permite todas as origens, você pode configurar para aceitar apenas origens específicas se desejar
 
-// Configuração do MySQL
-const connection = mysql.createConnection({
+
+const dbConfig = {
   host: 'localhost',
   user: 'root',
-  password: 'lg260294',
+  password: '123',
   database: 'dados'
-});
+};
+
+// Configuração do MySQL
+const connection = mysql.createConnection(dbConfig);
 
 connection.connect(err => {
   if (err) {
@@ -23,8 +26,16 @@ connection.connect(err => {
   console.log('Conexão com o MySQL estabelecida com sucesso');
 });
 
+
+// Middleware de tratamento de erros
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Erro interno do servidor');
+});
+
 // Middleware para análise do corpo da solicitação
 app.use(bodyParser.json());
+
 
 // Rota para registrar usuario
 app.post('/registrarUsuario', (req, res) => {
@@ -40,6 +51,9 @@ app.post('/registrarUsuario', (req, res) => {
     res.status(200).send('Usuario cadastrado com sucesso');
   });
 });
+
+
+//
 
 app.delete('/removerUsuario/:id', (req, res) => {
   const id = req.params.id;
@@ -194,8 +208,6 @@ app.put('/editarDados/:id', (req, res) => {
     res.status(200).send('Dado atualizado com sucesso');
   });
 });
-
-// Outras rotas podem ser definidas de maneira semelhante
 
 // Inicializar o servidor
 app.listen(3000, () => {

@@ -3,7 +3,7 @@
   margin: 0;
 }
 body {
-  background-image: url("image.jpg");
+  background-image: url("\\imgs\\image.jpg");
   display: flex;
   flex-direction: column;
   width: 100vw;
@@ -43,7 +43,24 @@ body {
   padding: 60px;
   box-sizing: border-box;
 }
+
+.aviso {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+.aviso.verde {
+  background-color: green;
+  color: white;
+}
+.aviso.vermelho {
+  background-color: red;
+  color: white;
+}
+
 @font-face {
-    font-family: 'Chocolate Donuts';
-    src: url('caminho/para/Chocolate Donuts.otf') format('opentype');
+  font-family: 'Chocolate Donuts';
+  src: url('fonts/Chocolate Donuts.otf') format('opentype');
 }
