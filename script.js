@@ -6,13 +6,54 @@ async function registrarUsuario() {
   let cpf = prompt("Qual é o seu CPF? (sem ponto)");
   const id_card = prompt("Qual é o ID card?");
 
-  // Validar o CPF
-  cpf = cpf.replace(/[^\d]+/g,'');
-  if(cpf.length !== 11) {
-    alert('CPF inválido. Por favor, insira um CPF válido.');
+  // Função para validar o CPF
+  function validarCPF(cpf) {
+    cpf = cpf.replace(/[^\d]+/g,'');
+    if(cpf.length !== 11) {
+      alert('CPF inválido. Por favor, insira um CPF válido.');
+      return false;
+    }
+
+    // Calcula o primeiro dígito verificador
+    var soma = 0;
+    for (var i = 0; i < 9; i++) {
+      soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    var primeiroDigito = 11 - (soma % 11);
+    if (primeiroDigito > 9) {
+      primeiroDigito = 0;
+    }
+
+    // Verifica se o primeiro dígito verificador é válido
+    if (parseInt(cpf.charAt(9)) !== primeiroDigito) {
+      alert('CPF inválido. Por favor, insira um CPF válido.');
+      return false;
+    }
+
+    // Calcula o segundo dígito verificador
+    soma = 0;
+    for (var i = 0; i < 10; i++) {
+      soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    var segundoDigito = 11 - (soma % 11);
+    if (segundoDigito > 9) {
+      segundoDigito = 0;
+    }
+
+    // Verifica se o segundo dígito verificador é válido
+    if (parseInt(cpf.charAt(10)) !== segundoDigito) {
+      alert('CPF inválido. Por favor, insira um CPF válido.');
+      return false;
+    }
+
+    return true;
+  }
+
+  // Valida o CPF inserido
+  if (!validarCPF(cpf)) {
     return;
   }
-  
+
   const pessoa = {
     nome: nome,
     cpf: cpf,
@@ -148,39 +189,43 @@ async function consultarUsuario() {
 
 async function editarDados() {
   try {
-    var idToUpdate = parseInt(prompt('Qual é o ID do usuário que você deseja editar?'));
-    var campo = prompt('Qual campo você deseja editar (nome, cpf ou id_card)?');
-    if (campo.toLowerCase() === "id" || campo.toLowerCase() === "id card") {
-      campo = "id_card";
+    const idToUpdate = parseInt(prompt('Qual é o ID do usuário que você deseja editar?'));
+    const campo = prompt('Qual campo você deseja editar (nome, cpf ou id_card)?').toLowerCase();
+
+    const camposValidos = ["nome", "cpf", "id_card"];
+    if (!camposValidos.includes(campo)) {
+      throw new Error('Campo inválido');
     }
-    var novoValor = prompt(`Insira o novo valor para o campo ${campo}:`);
+
+    let campoAtualizado = campo;
+    if (campo === "id") {
+      campoAtualizado = "id_card";
+    }
+
+    const novoValor = prompt(`Insira o novo valor para o campo ${campoAtualizado}:`);
 
     const dadosAtualizados = {};
-    dadosAtualizados[campo] = novoValor;
+    dadosAtualizados[campoAtualizado] = novoValor;
 
-    fetch(`http://localhost:3000/editarDados/${idToUpdate}`, {
+    const response = await fetch(`http://localhost:3000/editarDados/${idToUpdate}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(dadosAtualizados),
-    })
-    .then(response => {
-      if (!response.ok) {
-        if(response.status === 404) {
-          throw new Error('ID do usuário não encontrado');
-        } else {
-          throw new Error('Erro ao atualizar dados');
-        }
-      }
-      console.log('Dados atualizados com sucesso');
-    })
-    .catch(error => {
-      console.error('Erro ao editar dados:', error);
-      alert(error.message);
     });
-  } catch (e) {
-    alert(e);
+
+    if (!response.ok) {
+      if(response.status === 404) {
+        throw new Error('ID do usuário não encontrado');
+      } else {
+        throw new Error('Erro ao atualizar dados');
+      }
+    }
+    console.log('Dados atualizados com sucesso');
+  } catch (error) {
+    console.error('Erro ao editar dados:', error);
+    alert(error.message);
   }
 }
 
