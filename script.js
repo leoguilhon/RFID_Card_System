@@ -82,6 +82,7 @@ async function removerUsuario() {
         throw new Error('Erro ao remover acesso');
       }
       console.log('Usuário removido com sucesso');
+      alert('Usuário removido com sucesso');
     })
     .catch(error => {
       console.error('Erro ao remover acesso:', error);
